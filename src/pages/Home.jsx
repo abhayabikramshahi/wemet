@@ -150,7 +150,7 @@ const Home = () => {
               <span className="text-3xl font-bold text-blue-600">WEB</span>
             </motion.div>
             <div className="flex items-center justify-center text-blue-400 font-medium mt-6 group-hover:text-blue-300 transition duration-300">
-              <span>Telegram for <strong>Web</strong></span>
+              <span>RAW for <strong>Web</strong></span>
             </div>
           </motion.div>
         </div>
