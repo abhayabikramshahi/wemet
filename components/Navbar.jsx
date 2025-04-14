@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaTwitter } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
+import { HiMenu, HiX } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../src/context/LanguageContext";
@@ -15,13 +16,13 @@ const languages = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { currentLanguage, changeLanguage } = useLanguage();
   const [selectedLang, setSelectedLang] = useState(languages[0]);
 
   useEffect(() => {
-    // Set initial language from localStorage or context
-    const savedLang = localStorage.getItem('preferredLanguage') || currentLanguage;
-    const lang = languages.find(l => l.code === savedLang) || languages[0];
+    const savedLang = localStorage.getItem("preferredLanguage") || currentLanguage;
+    const lang = languages.find((l) => l.code === savedLang) || languages[0];
     setSelectedLang(lang);
   }, [currentLanguage]);
 
@@ -31,18 +32,22 @@ const Navbar = () => {
     changeLanguage(lang.code);
   };
 
+  const navItems = ["Home", "FAQ", "Apps", "API", "Moderation"];
+
   return (
-    <div className="w-full p-4 px-8 flex justify-between items-center bg-black/90 backdrop-blur-md border-b border-blue-500/20 shadow-lg fixed top-0 z-50 animate-slide-down">
-      {/* Left Navigation Links */}
-      <nav className="flex gap-6 text-blue-400">
-        {["Home", "FAQ", "Apps", "API", "Moderation"].map((item) => (
+    <div className="w-full p-4 px-6 md:px-8 flex justify-between items-center bg-black/90 backdrop-blur-md border-b border-blue-500/20 shadow-lg fixed top-0 z-50">
+      {/* Logo or site name can go here if needed */}
+
+      {/* Desktop Nav */}
+      <nav className="hidden md:flex gap-6 text-blue-400">
+        {navItems.map((item) => (
           <NavLink
             key={item}
             to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
             className={({ isActive }) =>
               `relative cursor-pointer hover:text-blue-300 transition-all duration-300 transform hover:scale-105 ${
-                isActive 
-                  ? "text-blue-300 font-semibold border-b-2 border-blue-400 pb-1 animate-pulse" 
+                isActive
+                  ? "text-blue-300 font-semibold border-b-2 border-blue-400 pb-1 animate-pulse"
                   : "hover:border-b-2 hover:border-blue-400/50 hover:pb-1"
               }`
             }
@@ -52,26 +57,31 @@ const Navbar = () => {
         ))}
       </nav>
 
-      {/* Right Side (Icons + Get Started) */}
-      <div className="flex items-center gap-4">
+      {/* Mobile Hamburger Menu */}
+      <div className="md:hidden text-blue-400">
+        <button onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <HiX className="text-2xl" /> : <HiMenu className="text-2xl" />}
+        </button>
+      </div>
+
+      {/* Right Section (Same for both) */}
+      <div className="hidden md:flex items-center gap-4">
         <NavLink
           to="/messages"
           className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/20"
         >
           Get Started
         </NavLink>
+
         <div className="relative">
-          <div 
+          <div
             className="flex items-center gap-2 cursor-pointer hover:text-blue-300 transition-all duration-300"
             onClick={() => setIsOpen(!isOpen)}
           >
             <MdLanguage className="text-xl hover:rotate-12 transition-transform duration-300" />
             <span className="flex items-center gap-1">
-              {selectedLang.code.toUpperCase()} 
-              <motion.span
-                animate={{ rotate: isOpen ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
+              {selectedLang.code.toUpperCase()}
+              <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                 ▼
               </motion.span>
             </span>
@@ -103,8 +113,40 @@ const Navbar = () => {
             )}
           </AnimatePresence>
         </div>
+
         <FaTwitter className="text-xl cursor-pointer hover:text-blue-300 transition-all duration-300 transform hover:scale-110 hover:rotate-12" />
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute top-16 left-0 w-full bg-black/90 backdrop-blur-md border-t border-blue-500/20 z-40 flex flex-col md:hidden px-6 pb-4"
+          >
+            {navItems.map((item) => (
+              <NavLink
+                key={item}
+                to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                className="py-2 text-blue-300 border-b border-blue-500/10 hover:text-blue-400 transition-all"
+                onClick={() => setMenuOpen(false)}
+              >
+                {item}
+              </NavLink>
+            ))}
+
+            <NavLink
+              to="/messages"
+              onClick={() => setMenuOpen(false)}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-full text-center hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20"
+            >
+              Get Started
+            </NavLink>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

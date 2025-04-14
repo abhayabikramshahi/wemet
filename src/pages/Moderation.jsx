@@ -60,11 +60,11 @@ const prohibitedContent = [
 
 const Moderation = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+    <div className="min-h-screen bg-black">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+        <div className="relative py-24">
           <div className="text-center">
             <h1 className="text-5xl font-extrabold text-white tracking-tight sm:text-6xl">
               Content Moderation
@@ -77,8 +77,8 @@ const Moderation = () => {
       </div>
 
       {/* Guidelines Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4">
           {guidelines.map((section, index) => (
             <motion.div
               key={section.title}
@@ -113,7 +113,7 @@ const Moderation = () => {
         </div>
 
         {/* Prohibited Content Section */}
-        <div className="mt-16 bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8">
+        <div className="mt-8 bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8 mx-4">
           <h2 className="text-3xl font-bold text-white mb-8 text-center">Prohibited Content</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {prohibitedContent.map((content, index) => (
@@ -134,7 +134,7 @@ const Moderation = () => {
         </div>
 
         {/* Reporting Section */}
-        <div className="mt-16 bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8">
+        <div className="mt-8 bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8 mx-4">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Report Inappropriate Content</h2>
             <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
@@ -155,4 +155,4 @@ const Moderation = () => {
   );
 };
 
-export default Moderation; 
+export default Moderation;

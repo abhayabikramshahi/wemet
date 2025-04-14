@@ -1,6 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { FaCode, FaKey, FaServer, FaDatabase, FaShieldAlt } from 'react-icons/fa';
+import { FaCode, FaKey, FaServer, FaDatabase, FaShieldAlt, FaJs, FaPython, FaJava } from 'react-icons/fa';
+import { SiC } from 'react-icons/si';
+
+const SyntaxHighlighter = lazy(() => import('react-syntax-highlighter'));
+const atomOneDark = lazy(() => import('react-syntax-highlighter/dist/esm/styles/hljs/atom-one-dark'));
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center p-4">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+  </div>
+);
 
 const endpoints = [
   {
@@ -77,13 +87,27 @@ const endpoints = [
 
 const Api = () => {
   const [selectedEndpoint, setSelectedEndpoint] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState('js');
+
+  const renderExampleCode = (endpoint) => {
+    switch (selectedLanguage) {
+      case 'python':
+        return `# Example in Python\nimport requests\n\nresponse = requests.${endpoint.method.toLowerCase()}('https://example.com${endpoint.path}', json={})`;
+      case 'java':
+        return `// Example in Java\nimport java.net.HttpURLConnection;\nimport java.net.URL;\n\nURL url = new URL("https://example.com${endpoint.path}");\nHttpURLConnection con = (HttpURLConnection) url.openConnection();\ncon.setRequestMethod("${endpoint.method}");`;
+      case 'c':
+        return `// Example in C\n#include <stdio.h>\n#include <curl/curl.h>\n\nCURL *curl = curl_easy_init();\nif(curl) {\n  curl_easy_setopt(curl, CURLOPT_URL, "https://example.com${endpoint.path}");\n  curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "${endpoint.method}");\n}`;
+      default:
+        return `// Example in JavaScript\nfetch('${endpoint.path}', {\n  method: '${endpoint.method}',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({})\n})`;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+    <div className="min-h-screen bg-black">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+        <div className="relative py-24">
           <div className="text-center">
             <h1 className="text-5xl font-extrabold text-white tracking-tight sm:text-6xl">
               API Documentation
@@ -213,23 +237,52 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`}</code>
 
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-3">Example Request</h3>
-                  <pre className="bg-gray-900/50 rounded-lg p-4 text-gray-300 overflow-x-auto">
-                    <code>{`// Example using fetch
-fetch('${selectedEndpoint.path}', {
-  method: '${selectedEndpoint.method}',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer YOUR_API_KEY'
-  },
-  body: JSON.stringify({
-    // Request body parameters
-  })
-})`}</code>
-                  </pre>
+                  <div className="flex mb-6">
+                    <button 
+                      className="p-2 hover:bg-blue-600 bg-blue-500 rounded-lg text-white flex items-center gap-2"
+                      onClick={() => setSelectedLanguage('js')}
+                    >
+                      <FaJs /> JavaScript
+                    </button>
+                    <button 
+                      className="p-2 hover:bg-green-600 bg-green-500 rounded-lg text-white ml-2 flex items-center gap-2"
+                      onClick={() => setSelectedLanguage('python')}
+                    >
+                      <FaPython /> Python
+                    </button>
+                    <button 
+                      className="p-2 hover:bg-orange-600 bg-orange-500 rounded-lg text-white ml-2 flex items-center gap-2"
+                      onClick={() => setSelectedLanguage('java')}
+                    >
+                      <FaJava /> Java
+                    </button>
+                    <button 
+                      className="p-2 hover:bg-red-600 bg-red-500 rounded-lg text-white ml-2 flex items-center gap-2"
+                      onClick={() => setSelectedLanguage('c')}
+                    >
+                      <SiC /> C
+                    </button>
+                  </div>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <SyntaxHighlighter 
+                      language={selectedLanguage} 
+                      style={atomOneDark}
+                      className="rounded-lg overflow-hidden" 
+                      customStyle={{
+                        backgroundColor: '#000',
+                        padding: '1.5rem',
+                        fontSize: '0.95rem',
+                        lineHeight: '1.5',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                    >
+                      {renderExampleCode(selectedEndpoint)}
+                    </SyntaxHighlighter>
+                  </Suspense>
                 </div>
               </motion.div>
             ) : (
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-6 h-full flex items-center justify-center">
+              <div className="bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-6 h-full flex items-center justify-center">
                 <div className="text-center">
                   <FaCode className="text-4xl text-gray-600 mx-auto mb-4" />
                   <p className="text-gray-400">Select an endpoint to view details</p>
@@ -238,34 +291,9 @@ fetch('${selectedEndpoint.path}', {
             )}
           </div>
         </div>
-
-        {/* Rate Limiting Section */}
-        <div className="mt-8 bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8">
-          <div className="flex items-center space-x-4 mb-6">
-            <FaServer className="text-3xl text-blue-400" />
-            <div>
-              <h2 className="text-2xl font-bold text-white">Rate Limiting</h2>
-              <p className="text-gray-400">Understand our API rate limits and quotas</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-700/30 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-2">Free Tier</h3>
-              <p className="text-gray-400">100 requests per minute</p>
-            </div>
-            <div className="bg-gray-700/30 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-2">Pro Tier</h3>
-              <p className="text-gray-400">1000 requests per minute</p>
-            </div>
-            <div className="bg-gray-700/30 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-2">Enterprise</h3>
-              <p className="text-gray-400">Custom rate limits</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
-export default Api; 
+export default Api;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaAndroid, FaApple, FaWindows, FaChrome, FaDesktop } from 'react-icons/fa';
+import { FaAndroid, FaChrome, FaGooglePlay } from 'react-icons/fa';
 
 const platforms = [
   {
@@ -12,36 +12,9 @@ const platforms = [
         name: "Android",
         icon: <FaAndroid className="text-2xl" />,
         description: "Download from Google Play Store",
-        link: "#",
-        image: "/src/upload/telegram-android.png"
-      },
-      {
-        name: "iOS",
-        icon: <FaApple className="text-2xl" />,
-        description: "Download from App Store",
-        link: "#",
-        image: "/src/upload/telegram-ios.png"
-      }
-    ]
-  },
-  {
-    name: "Desktop Apps",
-    icon: <FaDesktop className="text-4xl text-blue-400" />,
-    description: "Use We Met on your desktop with our native applications",
-    items: [
-      {
-        name: "Windows",
-        icon: <FaWindows className="text-2xl" />,
-        description: "Download for Windows",
-        link: "#",
-        image: "/src/upload/telegram-desktop.png"
-      },
-      {
-        name: "macOS",
-        icon: <FaApple className="text-2xl" />,
-        description: "Download for macOS",
-        link: "#",
-        image: "/src/upload/telegram-mac.png"
+        link: "#", // Replace with your actual link
+        image: "/src/upload/telegram-android.png",
+        playstoreLink: "#" // Add your Play Store link here
       }
     ]
   },
@@ -63,7 +36,7 @@ const platforms = [
 
 const Apps = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+    <div className="min-h-screen bg-black">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
@@ -81,14 +54,14 @@ const Apps = () => {
 
       {/* Platforms Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {platforms.map((platform, index) => (
             <motion.div
               key={platform.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2 }}
-              className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-6 hover:border-blue-500/50 transition-all duration-300"
+              className="bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-6 hover:border-blue-500/50 transition-all duration-300"
             >
               <div className="flex items-center space-x-4 mb-6">
                 {platform.icon}
@@ -102,7 +75,7 @@ const Apps = () => {
                 {platform.items.map((item) => (
                   <motion.div
                     key={item.name}
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.05 }}
                     className="bg-gray-700/50 rounded-xl p-4 border border-gray-600/50 hover:border-blue-500/30 transition-all duration-300"
                   >
                     <div className="flex items-center space-x-4">
@@ -118,6 +91,17 @@ const Apps = () => {
                         Download
                       </a>
                     </div>
+
+                    {/* Play Store Button */}
+                    {item.name === "Android" && (
+                      <a
+                        href={item.playstoreLink} // Use actual Play Store link
+                        className="mt-4 inline-flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
+                      >
+                        <FaGooglePlay className="text-2xl" />
+                        <span>Get it on Play Store</span>
+                      </a>
+                    )}
                   </motion.div>
                 ))}
               </div>
@@ -126,7 +110,7 @@ const Apps = () => {
         </div>
 
         {/* Features Section */}
-        <div className="mt-16 bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8">
+        <div className="mt-16 bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 p-8">
           <h2 className="text-3xl font-bold text-white mb-8 text-center">Why Choose We Met?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -161,4 +145,4 @@ const Apps = () => {
   );
 };
 
-export default Apps; 
+export default Apps;
