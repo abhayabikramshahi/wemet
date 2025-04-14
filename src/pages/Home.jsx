@@ -1,5 +1,5 @@
 import logo from "../upload/logo.jpg";
-import telegramLogo from "../upload/logo.jpg";
+import telegramLogo from "../upload/unnamed.png";
 import { FaAndroid } from "react-icons/fa";
 import androidImage from "../upload/telegram-android.png";
 import { motion } from "framer-motion";
@@ -33,7 +33,7 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.1, ease: "easeOut", delay: 0.3 }}
             >
-              Telegram
+              RAW
             </motion.h1>
             <motion.p
               className="text-gray-300 text-xl mt-4"
