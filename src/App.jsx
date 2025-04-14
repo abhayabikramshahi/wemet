@@ -8,6 +8,7 @@ import ContactSupport from "./pages/ContactSupport";
 import Apps from "./pages/Apps";
 import Moderation from "./pages/Moderation";
 import Api from "./pages/Api";
+import ReportContent from "./pages/ReportContent";
 
 import { LanguageProvider } from "./context/LanguageContext";
 import "./App.css";
@@ -28,6 +29,7 @@ export default function App() {
                 <Route path="/apps" element={<Apps />} />
                 <Route path="/moderation" element={<Moderation />} />
                 <Route path="/api" element={<Api />} />
+                <Route path="/report-content" element={<ReportContent />} />
               </Routes>
             </div>
           </div>

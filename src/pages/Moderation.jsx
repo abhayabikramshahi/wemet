@@ -156,3 +156,36 @@ const Moderation = () => {
 };
 
 export default Moderation;
+
+export const ReportContent = () => {
+  return (
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-2xl font-bold mb-4">Report Content</h1>
+      <p className="mb-6">Use this page to report inappropriate or harmful content. Please provide as much detail as possible to help us address the issue effectively.</p>
+
+      <form className="bg-white p-6 rounded shadow-md">
+        <div className="mb-4">
+          <label htmlFor="contentType" className="block text-sm font-medium text-gray-700">Content Type</label>
+          <select id="contentType" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+            <option>Text</option>
+            <option>Image</option>
+            <option>Video</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+          <textarea id="description" rows="4" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Describe the issue..."></textarea>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="attachment" className="block text-sm font-medium text-gray-700">Attachment (optional)</label>
+          <input type="file" id="attachment" className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+        </div>
+
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Submit Report</button>
+      </form>
+    </div>
+  );
+};
