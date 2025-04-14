@@ -130,7 +130,7 @@ const Home = () => {
             />
             <div className="flex items-center justify-center text-blue-400 font-medium mt-6 group-hover:text-blue-300 transition duration-300">
               <FaAndroid className="text-3xl mr-3" />
-              <span>Telegram for <strong>Android</strong></span>
+              <span>RAW for <strong>Android</strong></span>
             </div>
           </motion.div>
 
