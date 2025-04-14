@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaShieldAlt, FaUserShield, FaExclamationTriangle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
+
 const guidelines = [
   {
     title: "Community Guidelines",
@@ -78,7 +79,7 @@ const Moderation = () => {
 
       {/* Guidelines Section */}
       <div className="pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 py-[40px]">
           {guidelines.map((section, index) => (
             <motion.div
               key={section.title}
