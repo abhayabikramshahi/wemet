@@ -1,41 +1,53 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import Navbar from "../components/Navbar";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import FAQ from "./pages/Faq";
-import ContactSupport from "./pages/ContactSupport";
-import Apps from "./pages/Apps";
-import Moderation from "./pages/Moderation";
-import Api from "./pages/Api";
-import ReportContent from "./pages/ReportContent";
+import About from "./pages/About";
+import Motive from "./pages/Motive";
+import GetStarted from "./pages/GetStarted";
+import Recommended from "./app/components/Recomended"; // New page
+import Culture from "./app/components/Culture"; // New page
+import MainApp from "./app/index";
+import Profile from "./app/pages/Profile";
+import EditProfile from "./app/pages/EditProfile";
+import Messages from "./app/pages/Messages";
+import Settings from "./app/pages/Settings";
+import Notifications from "./app/pages/Notifications";
+import AppLayout from "./app/components/AppLayout";
+import './App.css';
 
-import { LanguageProvider } from "./context/LanguageContext";
-import "./App.css";
+function AppContent() {
+  const location = useLocation();
+  const isAppRoute = location.pathname.startsWith('/app');
 
-export default function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <div className="min-h-screen bg-black text-gray-100 animate-fade-in">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-black/50 pointer-events-none" />
-          <Navbar />
-          <div className="mt-16 container mx-auto px-4">
-            <div className="bg-gray-900/90 rounded-lg shadow-2xl border border-blue-500/20 p-6 backdrop-blur-sm transform transition-all duration-300 hover:border-blue-500/30 hover:shadow-blue-500/10">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/contact-support" element={<ContactSupport />} />
-                <Route path="/apps" element={<Apps />} />
-                <Route path="/moderation" element={<Moderation />} />
-                <Route path="/api" element={<Api />} />
-                <Route path="/report-content" element={<ReportContent />} />
-              </Routes>
-            </div>
-          </div>
-        </div>
-      </Router>
-      <Toaster position="top-right" />
-    </LanguageProvider>
+    <>
+      {!isAppRoute && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/motive" element={<Motive />} />
+        <Route path="/get-started" element={<GetStarted />} />
+        <Route path="/recommended" element={<Recommended />} /> {/* New route */}
+        <Route path="/culture" element={<Culture />} /> {/* New route */}
+        <Route path="/app/*" element={<AppLayout><MainApp /></AppLayout>} />
+        <Route path="/app/profile" element={<AppLayout><Profile /></AppLayout>} />
+        <Route path="/app/profile/edit" element={<AppLayout><EditProfile /></AppLayout>} />
+        <Route path="/app/messages" element={<AppLayout><Messages /></AppLayout>} />
+        <Route path="/app/notifications" element={<AppLayout><Notifications /></AppLayout>} />
+        <Route path="/app/settings" element={<AppLayout><Settings /></AppLayout>} />
+        <Route path="/app/help" element={<AppLayout><MainApp /></AppLayout>} />
+        <Route path="/chat/:id" element={<Messages />} />
+      </Routes>
+    </>
   );
 }
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+export default App;
