@@ -13,18 +13,18 @@ const Home = () => {
         transition={{ duration: 0.8 }}
         className="text-center md:text-left max-w-md"
       >
-        <h1 className="text-3xl font-extrabold text-gray-900 leading-snug">
-          Find Your Perfect Match on <span className="text-red-500">Igotboo</span> ❤️
+        <h1 className="text-5xl font-extrabold text-gray-900 leading-snug">
+          Find Your Perfect Match on <span className="text-black">Raw</span> 
         </h1>
-        <p className="text-sm text-gray-600 mt-3">
+        <p className="text-xl text-gray-600 mt-3">
           Discover meaningful connections, go on exciting dates, and find your special someone in a safe and friendly environment.
         </p>
         <motion.button 
           whileHover={{ scale: 1.1 }} 
-          className="mt-5 bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transition-all mx-auto sm:mx-0"
+          className="mt-5 bg-black text-white px-5 py-4 rounded-full flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transition-all mx-auto sm:mx-0"
           onClick={() => window.location.href = '/src/app/'}
         >
-          Start Dating <ArrowRight size={18} />
+          Start Exploring <ArrowRight size={18} />
         </motion.button>
       </motion.div>
 
@@ -38,7 +38,7 @@ const Home = () => {
         <img 
           src={WeMet}
           alt="Dating App" 
-          className="w-[85%] md:w-[350px] rounded-lg shadow-md"
+          className="w-[85%] md:w-[350px]"
         />
       </motion.div>
     </section>

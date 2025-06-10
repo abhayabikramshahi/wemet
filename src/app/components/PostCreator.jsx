@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Smile, Send, X } from 'lucide-react';
 import defaultAvatar from '../../assets/default-avatar.svg';
 
-const PostCreator = () => {
+const PostCreator = ({ onPostCreated }) => {
   const [postContent, setPostContent] = useState('');
   const [media, setMedia] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +17,11 @@ const PostCreator = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Creating post:', postContent, media);
+    
+    // Call the callback function if it exists
+    if (onPostCreated && (postContent.trim() || media)) {
+      onPostCreated(postContent, media);
+    }
 
     // Reset state
     setPostContent('');

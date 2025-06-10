@@ -30,24 +30,24 @@ const Navbar = () => {
       </div>
 
       {/* Links */}
-      <div className={`flex-col sm:flex-row sm:flex gap-4 text-base ${isMenuOpen ? "flex" : "hidden"} sm:block`}>
-        <Link to="/" className="flex items-center gap-2 hover:text-red-500 transition-all duration-300">
+      <div className={`flex-col sm:flex-row sm:flex gap-4 text-base sticky fixed ${isMenuOpen ? "flex" : "hidden"} sm:block`}>
+        <Link to="/" className="flex items-center gap-2 hover:text-gray-600 transition-all duration-300">
           <Home size={20} /> Home
         </Link>
-        <Link to="/about" className="flex items-center gap-2 hover:text-red-500 transition-all duration-300">
+        <Link to="/about" className="flex items-center gap-2 hover:text-gray-600 transition-all duration-300">
           <Info size={20} /> About
         </Link>
-        <Link to="/motive" className="flex items-center gap-2 hover:text-red-500 transition-all duration-300">
+        <Link to="/motive" className="flex items-center gap-2 hover:text-gray-600 transition-all duration-300">
           <Compass size={20} /> Motive
         </Link>
-        <MessagePopup />
+
       </div>
 
       {/* Button */}
       <motion.div whileHover={{ scale: 1.1 }} className="hidden sm:block">
         <Link 
           to="/get-started" 
-          className="flex items-center gap-2 bg-red-500 text-white px-5 py-2 rounded-full hover:bg-red-600 transition-all duration-300 shadow-md"
+          className="flex items-center gap-2 bg-black text-white px-5 py-2 rounded-full hover:bg-red-600 transition-all duration-300 shadow-md"
         >
           <Rocket size={20} /> Get Started
         </Link>

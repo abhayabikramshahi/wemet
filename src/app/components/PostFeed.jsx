@@ -6,6 +6,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import debounce from 'lodash/debounce';
 import ShareModal from './ShareModal';
+import PostCreator from './PostCreator';
 
 // Images model
 import Couples from '../post user images/couples.png';
@@ -16,24 +17,26 @@ import Laptop from '../post user images/laptop.png';
 import Mark2 from '../post user images/mark(2).png';
 
 // Default avatar for fallback
-const DEFAULT_AVATAR = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIH cytok="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#E5E7EB"/><path d="M100 120C85.1472 120 72.5999 107.453 72.5999 92.6001C72.5999 77.7473 85.1472 65.2001 100 65.2001C114.853 65.2001 127.4 77.7473 127.4 92.6001C127.4 107.453 114.853 120 100 120Z" fill="#94A3B3"/><path fill-rule="evenodd" clip-rule="evenodd" d="M100 200C44.7715 200 0 155.228 0 100C0 44.7715 44.7715 0 100 0C155.228 0 200 44.7715 200 100C200 155.228 155.228 200 100 200ZM100 180C144.183 180 180 144.183 180 100C180 55.8172 144.183 20 100 20C55.8172 20 20 55.8172 20 100C20 144.183 55.8172 180 100 180Z" fill="#94A3B3"/></svg>';
+const DEFAULT_AVATAR = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNFNUU3RUIiLz48cGF0aCBkPSJNMTAwIDEyMEM4NS4xNDcyIDEyMCA3Mi41OTk5IDEwNy40NTMgNzIuNTk5OSA5Mi42MDAxQzczLjU5OTkgNzcuNzQ3MyA4NS4xNDcyIDY1LjIwMDEgMTAwIDY1LjIwMDFDMTE0Ljg1MyA2NS4yMDAxIDEyNy40IDc3Ljc0NzMgMTI3LjQgOTIuNjAwMUMxMjcuNCAxMDcuNDUzIDExNC44NTMgMTIwIDEwMCAxMjBaIiBmaWxsPSIjOTRBM0IzIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMDAgMjAwQzQ0Ljc3MTUgMjAwIDAgMTU1LjIyOCAwIDEwMEMwIDQ0Ljc3MTUgNDQuNzcxNSAwIDEwMCAwQzE1NS4yMjggMCAyMDAgNDQuNzcxNSAyMDAgMTAwQzIwMCAxNTUuMjI4IDE1NS4yMjggMjAwIDEwMCAyMDBaTTEwMCAxODBDMTQ0LjE4MyAxODAgMTgwIDE0NC4xODMgMTgwIDEwMEMxODAgNTUuODE3MiAxNDQuMTgzIDIwIDEwMCAyMEM1NS44MTcyIDIwIDIwIDU1LjgxNzIgMjAgMTAwQzIwIDE0NC4xODMgNTUuODE3MiAxODAgMTAwIDE4MFoiIGZpbGw9IiOSD0iIzk0QTNCMyIvPjwvc3ZnPg==';
 
 const dummyPosts = [
   {
     id: 1,
     username: 'Ajay Gautam',
     handle: '@ajaygautam',
-    avatar: DEFAULT_AVATAR, // Could use a custom avatar if available
+    avatar: DEFAULT_AVATAR,
     content: 'Just got back from an amazing hike in Raskot! 🌄',
-    image: Nature, // Using Nature image for the hike post
+    image: Nature,
     likes: 12,
+    liked: false,
     comments: [
       {
         id: 1,
         username: 'Mark Zuckerberg',
-        avatar: Mark2, // Using Mark2 for comment avatar
+        avatar: Mark2,
         content: 'Looks amazing! Which trail did you take?',
         likes: 2,
+        liked: false,
         replies: [
           {
             id: 1,
@@ -41,6 +44,7 @@ const dummyPosts = [
             avatar: DEFAULT_AVATAR,
             content: 'Took the eastern trail, it was breathtaking!',
             likes: 1,
+            liked: false,
           },
         ],
       },
@@ -52,38 +56,42 @@ const dummyPosts = [
     handle: '@sitakumari',
     avatar: DEFAULT_AVATAR,
     content: 'Trying out a new food recipe 🍜 Anyone else love cooking?',
-    image: null, // No image for this post
+    image: null,
     likes: 8,
+    liked: false,
     comments: [],
   },
   {
     id: 3,
     username: 'Mark Zuckerberg',
     handle: '@zuck',
-    avatar: Mark, // Using Mark for post avatar
+    avatar: Mark,
     content: "Just finished coding a new AI feature. Can't wait to ship it 🚀",
-    image: Laptop, // Using Laptop image for coding post
+    image: Laptop,
     likes: 25,
+    liked: false,
     comments: [],
   },
   {
     id: 4,
     username: 'Elon Musk',
     handle: '@elonmusk',
-    avatar: Elon, // Using Elon image for avatar
+    avatar: Elon,
     content: 'Mars is looking closer than ever. Starship test successful! 🔴🪐',
-    image: null, // No image for this post
+    image: null,
     likes: 150,
+    liked: false,
     comments: [],
   },
   {
     id: 5,
     username: 'Alex & Priya',
     handle: '@alexandpriya',
-    avatar: Couples, // Using Couples image for avatar
+    avatar: Couples,
     content: 'Celebrating 3 years of love in Goa 🌊❤️ #CoupleGoals',
-    image: Couples, // Using Couples image for post
+    image: Couples,
     likes: 30,
+    liked: false,
     comments: [],
   },
 ];
@@ -197,7 +205,7 @@ const Post = React.memo(
               threshold={100}
               placeholder={<div className="w-full h-full bg-gray-100" />}
               onError={(e) => {
-                e.target.src = DEFAULT_AVATAR; // Fallback to default image
+                e.target.src = DEFAULT_AVATAR;
               }}
             />
           </div>
@@ -217,7 +225,7 @@ const Post = React.memo(
           className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition duration-200"
         >
           <FaRegCommentDots />
-          <span>{post.comments?.length || 0}</span>
+          <span>{post.comments?.lengh || 0}</span>
         </button>
         <button
           onClick={() => onShare(post)}
@@ -229,7 +237,7 @@ const Post = React.memo(
       </div>
 
       {showComments && (
-        <div className="p-4 border-t space-y-4">
+        <div className="p-4 border-t space-y-4 overflow-y-auto">
           {post.comments?.map((comment) => (
             <Comment
               key={comment.id}
@@ -250,21 +258,35 @@ const Post = React.memo(
 
 const PostFeed = () => {
   const [posts, setPosts] = useState(dummyPosts);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [showShareModal, setShowShareModal] = useState(false);
   const [showComments, setShowComments] = useState({});
-  const [showReplies, setShowReplies] = useState({});
-  const [expandedImage, setExpandedImage] = useState(null);
   const [newComment, setNewComment] = useState('');
+  const [showReplies, setShowReplies] = useState({});
   const [newReply, setNewReply] = useState({});
-
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [expandedImage, setExpandedImage] = useState(null);
   const parentRef = useRef(null);
+
+  const handleNewPost = (postContent, media) => {
+    const newPost = {
+      id: posts.length + 1,
+      username: 'John Doe',
+      handle: '@johndoe',
+      avatar: DEFAULT_AVATAR,
+      content: postContent,
+      image: media ? URL.createObjectURL(media) : null,
+      likes: 0,
+      liked: false,
+      comments: [],
+    };
+    setPosts([newPost, ...posts]);
+  };
 
   // Virtual list implementation
   const rowVirtualizer = useVirtualizer({
     count: posts.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 400, // Estimated height of each post
+    estimateSize: () => 450,
     overscan: 5,
   });
 
@@ -307,7 +329,7 @@ const PostFeed = () => {
 
   const handleShare = useCallback((post) => {
     setSelectedPost(post);
-    setShowShareModal(true);
+    setShareModalOpen(true);
   }, []);
 
   // Debounced comment handler
@@ -330,6 +352,7 @@ const PostFeed = () => {
               avatar: DEFAULT_AVATAR,
               content: newComment,
               likes: 0,
+              liked: false,
               replies: [],
             };
             return {
@@ -342,8 +365,9 @@ const PostFeed = () => {
       );
 
       setNewComment('');
+      debouncedCommentChange('');
     },
-    [newComment]
+    [newComment, debouncedCommentChange]
   );
 
   const handleAddReply = useCallback(
@@ -364,6 +388,7 @@ const PostFeed = () => {
                     avatar: DEFAULT_AVATAR,
                     content: newReply[commentId],
                     likes: 0,
+                    liked: false,
                   };
                   return {
                     ...comment,
@@ -379,6 +404,7 @@ const PostFeed = () => {
       );
 
       setNewReply((prev) => ({ ...prev, [commentId]: '' }));
+      setShowReplies((prev) => ({ ...prev, [commentId]: false }));
     },
     [newReply]
   );
@@ -392,72 +418,85 @@ const PostFeed = () => {
   }, []);
 
   return (
-    <div
-      ref={parentRef}
-      className="max-w-2xl mx-auto p-4 h-screen overflow-auto"
-    >
-      <div
-        className="relative"
-        style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
-        }}
-      >
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-          const post = posts[virtualRow.index];
-          return (
-            <div
-              key={post.id}
-              className="absolute top-0 left-0 w-full"
-              style={{
-                height: virtualRow.size,
-                transform: `translateY(${virtualRow.start}px)`,
-              }}
-            >
-              <Post
-                post={post}
-                onLike={handleLike}
-                onComment={handleComment}
-                onShare={handleShare}
-                showComments={showComments[post.id]}
-                onExpandImage={setExpandedImage}
-                onCommentLike={handleCommentLike}
-                onReplyToggle={handleReplyToggle}
-                showReplies={showReplies}
-                onAddReply={handleAddReply}
-                newReply={newReply}
-                onReplyChange={handleReplyChange}
-              />
-              {showComments[post.id] && (
-                <div className="p-4 border-t space-y-4">
-                  <form
-                    onSubmit={(e) => handleAddComment(post.id, e)}
-                    className="flex gap-2"
-                  >
-                    <input
-                      type="text"
-                      value={newComment}
-                      onChange={(e) => debouncedCommentChange(e.target.value)}
-                      placeholder="Write a comment..."
-                      className="flex-1 px-4 py-2 rounded-full border focus:outline-none focus:border-blue-500"
-                    />
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-200"
-                    >
-                      Post
-                    </button>
-                  </form>
-                </div>
-              )}
-            </div>
-          );
-        })}
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      {/* Post Creator Component */}
+      <div className="mb-6 sticky top-0 z-10 bg-white py-4">
+        <PostCreator onPostCreated={handleNewPost} />
       </div>
 
-      {showShareModal && (
+      <div
+        ref={parentRef}
+        className="h-[calc(100vh-180px)] overflow-auto"
+        style={{
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        <div
+          className="relative"
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const post = posts[virtualRow.index];
+            return (
+              <div
+                key={post.id}
+                className="absolute top-0 left-0 w-full mb-4"
+                style={{
+                  height: virtualRow.size,
+                  minHeight: 0, // Explicitly ensure no min-height
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                <Post
+                  post={post}
+                  onLike={handleLike}
+                  onComment={handleComment}
+                  onShare={handleShare}
+                  showComments={showComments[post.id]}
+                  onExpandImage={setExpandedImage}
+                  onCommentLike={handleCommentLike}
+                  onReplyToggle={handleReplyToggle}
+                  showReplies={showReplies}
+                  onAddReply={handleAddReply}
+                  newReply={newReply}
+                  onReplyChange={handleReplyChange}
+                />
+                {showComments[post.id] && (
+                  <div className="p-4 bg-white rounded-b-lg border-t space-y-4 mb-6">
+                    <form
+                      onSubmit={(e) => handleAddComment(post.id, e)}
+                      className="flex gap-2"
+                    >
+                      <input
+                        type="text"
+                        value={newComment}
+                        onChange={(e) => debouncedCommentChange(e.target.value)}
+                        placeholder="Write a comment..."
+                        className="flex-1 px-4 py-2 rounded-full border focus:outline-none focus:border-blue-500"
+                      />
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-200"
+                      >
+                        Post
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {shareModalOpen && (
         <ShareModal
+          isOpen={shareModalOpen}
           post={selectedPost}
-          onClose={() => setShowShareModal(false)}
+          onClose={() => setShareModalOpen(false)}
         />
       )}
 
