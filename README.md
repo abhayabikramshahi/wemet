@@ -54,4 +54,6 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/your-username/raw-app.git
-cd raw-app
+cd wemet
+npm install
+npm run dev
